@@ -176,7 +176,7 @@ public class AddSignature {
     KeyStore.PasswordProtection keyPassword = new KeyStore.PasswordProtection(   password);
     KeyStore.PrivateKeyEntry    keyPair = (KeyStore.PrivateKeyEntry) keyStore.getEntry(keyAlias,keyPassword);
 
-    //RETURN PRIVATE KEY
+    //RETURN KEY PAIR
     return keyPair;
 
   }
