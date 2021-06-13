@@ -42,7 +42,7 @@ public class AddSignature {
 
   //XML FILES
   static String fileXMLInput     = "src/main/resources/Person.xml";
-  static String fileXMLSigned    = "src/main/resources/PersonSigned.xml";
+  static String fileXMLSigned    = "src/main/resources/PersonSignedWithKeyInfo.xml";
 
   //================================================================================
   // MAIN
