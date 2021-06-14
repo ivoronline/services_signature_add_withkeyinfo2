@@ -80,14 +80,15 @@ public class XMLUtil {
   //================================================================================
   // SIGN DOCUMENT
   //================================================================================
-  // XMLUtil.signDocument(document,Key,certificate,"Person","data",DigestMethod.SHA1,SignatureMethod.RSA_SHA1);
-  // <Person Id="data">
+  // signDocument(document, Key, certificate, "Person", "data", DigestMethod.SHA1, SignatureMethod.RSA_SHA1);
+  // IF <Person Id="data"> THEN referenceURI="#data" AND FIX IS NEEDED
+  // IF <Person>           THEN referenceURI=""      AND FIX IS NOT NEEDED
   public static void signDocument(
     Document        document,        //RETURN VALUE
     Key             key,
     X509Certificate certificate,     //null or certificate for optional <KeyInfo>
     String          elementName,     //"Person"     FIX
-    String          referenceURI,    //"data", ""
+    String          referenceURI,    //"#data", ""
     String          digestMethod,    //DigestMethod.SHA1
     String          signatureMethod  //SignatureMethod.RSA_SHA1
   ) throws Exception {
@@ -101,7 +102,7 @@ public class XMLUtil {
 
     //GET REFERENCE
     Reference reference = factory.newReference(
-      "#" + referenceURI,
+      referenceURI,
       factory.newDigestMethod(digestMethod, null),
       Collections.singletonList(factory.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null)),
       null,
@@ -114,10 +115,16 @@ public class XMLUtil {
       factory.newSignatureMethod(signatureMethod, null),Collections.singletonList(reference)
     );
 
-    //SIGN DOCUMENT
-    Element        element = (Element) document.getElementsByTagName(elementName).item(0);         //FIX
+    //PREPARE SIGN CONTEXT
     DOMSignContext domSignContext = new DOMSignContext(key, document.getDocumentElement());
-                   domSignContext.setIdAttributeNS(element, null, "Id");                           //FIX
+
+    //FIX IF referenceURI POINTS TO Id ATTRIBUTE
+    if (!referenceURI.equals("") ) {
+      Element element = (Element) document.getElementsByTagName(elementName).item(0);
+      domSignContext.setIdAttributeNS(element, null, "Id");
+    }
+
+    //SIGN DOCUMENT
     XMLSignature   signature = factory.newXMLSignature(signedInfo, keyInfo);
                    signature.sign(domSignContext);
 
