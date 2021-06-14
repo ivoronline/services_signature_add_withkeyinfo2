@@ -80,7 +80,7 @@ public class XMLUtil {
   //================================================================================
   // SIGN DOCUMENT
   //================================================================================
-  // signDocument(document, Key, certificate, "Person", "data", DigestMethod.SHA1, SignatureMethod.RSA_SHA1);
+  // signDocument(document, Key, certificate, "Person", "#data", DigestMethod.SHA1, SignatureMethod.RSA_SHA1);
   // IF <Person Id="data"> THEN referenceURI="#data" AND FIX IS NEEDED
   // IF <Person>           THEN referenceURI=""      AND FIX IS NOT NEEDED
   public static void signDocument(
