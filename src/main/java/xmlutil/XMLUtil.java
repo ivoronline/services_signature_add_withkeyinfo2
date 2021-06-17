@@ -45,7 +45,7 @@ public class XMLUtil {
     //READ DOCUMENT FROM FILE
     DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
                            documentFactory.setNamespaceAware(true);
-    InputStream            inputStream     = XMLUtil.class.getResourceAsStream("/Person.xml");
+    InputStream            inputStream     = XMLUtil.class.getResourceAsStream(fileName);
     Document               document        = documentFactory.newDocumentBuilder().parse(inputStream);
 
     //RETURN DOCUMENT
@@ -85,6 +85,7 @@ public class XMLUtil {
     return keyPair;
 
   }
+
   //================================================================================
   // SIGN DOCUMENT
   //================================================================================
@@ -93,9 +94,9 @@ public class XMLUtil {
   // IF <Person>           THEN referenceURI=""      AND FIX IS NOT NEEDED
   public static void signDocument(
     Document        document,        //RETURN VALUE
-    Key             key,
+    Key             key,             //Key used to sign XML Element
     X509Certificate certificate,     //null or certificate for optional <KeyInfo>
-    String          elementToSign,   //"Person"     FIX
+    String          elementName,     //"Person"     Element to Sign
     String          referenceURI,    //"#data", ""
     String          digestMethod,    //DigestMethod.SHA1
     String          signatureMethod  //SignatureMethod.RSA_SHA1
@@ -124,11 +125,11 @@ public class XMLUtil {
     );
 
     //PREPARE SIGN CONTEXT
-    DOMSignContext domSignContext = new DOMSignContext(key, document.getElementsByTagName(elementToSign).item(0));
+    DOMSignContext domSignContext=new DOMSignContext(key, document.getElementsByTagName(elementName).item(0));
 
     //FIX IF referenceURI POINTS TO Id ATTRIBUTE
     if (!referenceURI.equals("") ) {
-      Element element = (Element) document.getElementsByTagName(elementToSign).item(0);
+      Element element = (Element) document.getElementsByTagName(elementName).item(0);
       domSignContext.setIdAttributeNS(element, null, "Id");
     }
 
