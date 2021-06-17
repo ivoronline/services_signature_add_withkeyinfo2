@@ -9,14 +9,14 @@ import java.security.cert.X509Certificate;
 public class AddSignature {
 
   //KEY STORE
-  static String keyStoreName     = "src/main/resources/ClientKeyStore.jks";
+  static String keyStoreName     = "/ClientKeyStore.jks";
   static String keyStorePassword = "mypassword";
   static String keyStoreType     = "JKS";
   static String keyAlias         = "clientkeys1";
 
   //XML FILES
-  static String fileXMLInput     = "src/main/resources/Person.xml";
-  static String fileXMLSigned    = "src/main/resources/PersonSignedWithKeyInfo.xml";
+  static String fileXMLInput     = "/Person.xml";
+  static String fileXMLSigned    = "PersonSignedWithKeyInfo.xml";
 
   //================================================================================
   // MAIN
