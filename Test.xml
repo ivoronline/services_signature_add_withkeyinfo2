@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Envelope>
+
+  <Header>Not Signed</Header>
+
+  <Person Id="data">
+    <name>John</name>
+    <age>20</age>
+    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+      <SignedInfo>
+        <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+        <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+        <Reference URI="#data">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+          <DigestValue>jq7/gDenXs2sxKduwNkGEoRrml0=</DigestValue>
+        </Reference>
+      </SignedInfo>
+      <SignatureValue>cBwC5r8r57+MP2VU5odw/UqpS2J0NpE2c2FM+oWBZwcdd9lawx+dzFH77arCGJJmEAebUlJ3sPTU&#13;
+        TFnmBr6GnGISKXhOBWzhlNH8ZhKS0TqfewUcCXPJa75w1/QqKkhGY5ICMm1VCgVVIVCXnVLUX+Ix&#13;
+        1XZzhsHgx3BmmOW0hHfeby/EmUPFXhsd0E6wUdtKCwj/w/pnWsdQVa3iBB3ao+lPuPLdXqEhn5Ly&#13;
+        kqEGlYzyXr8hdtCVdmEtR5SEcA/0d3xAyPR0ys2PnAeyLjoRqoD0qt590oR2PwzyIZpa//rmUqZx&#13;
+        W2JKcyIoXw5rAL+bsKp/xw5bQMfy5UVqcWQJWw==
+      </SignatureValue>
+      <KeyInfo>
+        <KeyValue>
+          <RSAKeyValue>
+            <Modulus>vPYO0YFKF9VmikpgfFiMScCZE1k5ZInMyOb4YALeJfsxSnEOoFbOpPfC9MDBLoSxDHdNQCnACVuu&#13;
+              RY66p52xaUcTiuOJqHifeGnNqV/Vp8E4n91UvaCIH4OvEshgWbcg1VgSBstwLaEQqCoEFyHDUQWr&#13;
+              nVXZtaKrqOoAv2M+CMwUtxBj8XbOvGW0Ye7ofTojL4xBgIMpTl+iPhCSJGVVFIrOuIBXv/UCdzIt&#13;
+              LZjK8p+QV7YdT63lSM3mHgZQOVfTEeKQ0/zeDVeFj7TIgsoOnWWwc1bzDfaE40gWkGn2HAbtjzg7&#13;
+              3OxCt4oX1r4StzULe9Y6qrOdt4LGTePtbewcbQ==
+            </Modulus>
+            <Exponent>AQAB</Exponent>
+          </RSAKeyValue>
+        </KeyValue>
+      </KeyInfo>
+    </Signature>
+  </Person>
+
+</Envelope>
