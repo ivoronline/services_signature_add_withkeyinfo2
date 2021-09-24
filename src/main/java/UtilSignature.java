@@ -1,5 +1,7 @@
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.Reference;
 import javax.xml.crypto.dsig.SignedInfo;
@@ -11,8 +13,10 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
+import javax.xml.crypto.dsig.keyinfo.X509IssuerSerial;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
+import java.math.BigInteger;
 import java.security.Key;
 import java.security.KeyException;
 import java.security.cert.X509Certificate;
@@ -83,27 +87,63 @@ public class UtilSignature {
     XMLSignatureFactory factory
   ) throws KeyException {
 
-    //KEY INFO FACTORY
-    KeyInfoFactory keyInfoFactory     = factory.getKeyInfoFactory();
+    //CREATE KEY INFO FACTORY
+    KeyInfoFactory     keyInfoFactory = factory.getKeyInfoFactory();
 
-    //X509 DATA
-    String          certificateName    = certificate.getSubjectX500Principal().getName();
-    List            x509list           = new ArrayList();
-                    x509list.add(certificateName);
-                    x509list.add(certificate);
-    X509Data        x509Data           = keyInfoFactory.newX509Data(x509list);
+    //CREATE ITEMS
+    X509Data           x509Data = createX509Data(keyInfoFactory, certificate);
+    KeyValue           keyValue = createKeyValue(keyInfoFactory, certificate);
 
-    //KEY VALUE
-    KeyValue        keyValue           = keyInfoFactory.newKeyValue(certificate.getPublicKey());
+    //CREATE LIST FROM ITEMS
+    List<XMLStructure> items = new ArrayList<>();
+                       items.add(x509Data);
+                       items.add(keyValue);
 
     //CREATE KEY INFO
-    List            items              = new ArrayList();
-                    items.add(x509Data);
-                    //items.add(keyValue);
-    KeyInfo         keyInfo            = keyInfoFactory.newKeyInfo(items);
+    KeyInfo            keyInfo = keyInfoFactory.newKeyInfo(items);
 
     //RETURN KEY INFO
     return keyInfo;
+
+  }
+
+  //================================================================================
+  // CREATE X509 DATA
+  //================================================================================
+  private static X509Data createX509Data(KeyInfoFactory keyInfoFactory, X509Certificate certificate) {
+
+    //CERTIFICATE NAME
+    String             certificateName         = certificate.getSubjectX500Principal().getName();
+
+    //ISSUER
+    String           issuerName              = certificate.getIssuerX500Principal().getName();
+    BigInteger       certificateSerialNumber = certificate.getSerialNumber();
+    X509IssuerSerial issuer                  = keyInfoFactory.newX509IssuerSerial(issuerName, certificateSerialNumber);
+
+    //CREATE X509 LIST
+    List<Object>       x509list = new ArrayList<>();
+                       x509list.add(certificate);
+                       x509list.add(certificateName);
+                       x509list.add(issuer);
+
+    //CREATE X509 DATA
+    X509Data           x509Data = keyInfoFactory.newX509Data(x509list);
+
+    //RETURN X509 DATA
+    return x509Data;
+
+  }
+
+  //================================================================================
+  // CREATE KEY VALUE
+  //================================================================================
+  private static KeyValue createKeyValue(KeyInfoFactory keyInfoFactory, X509Certificate certificate) throws KeyException {
+
+    //CREATE KEY VALUE
+    KeyValue keyValue = keyInfoFactory.newKeyValue(certificate.getPublicKey());
+
+    //RETURN KEY VALUE
+    return keyValue;
 
   }
 
